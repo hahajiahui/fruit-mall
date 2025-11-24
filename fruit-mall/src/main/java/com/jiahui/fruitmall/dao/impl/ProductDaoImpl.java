@@ -84,6 +84,37 @@ public class ProductDaoImpl implements ProductDao {
 
     }
 
+    @Override
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+
+        //SQL 更新語法
+        String sql="Update product set product_name=:productName,category=:category,image_url=:imageUrl,"+
+                "price=:price,stock=:stock,description=:description,last_modified_date=:lastModifiedDate"+
+                " WHERE product_id=:productId";
+
+        // map 裝 要查詢的 sql 語法 接前端傳來 json 數值
+
+        Map<String,Object> map =new HashMap<>();
+
+        map.put("productId",productId);
+
+        map.put("productName",productRequest.getProductName());
+        map.put("category",productRequest.getCategory().toString());
+        map.put("imageUrl",productRequest.getImageUrl());
+        map.put("price",productRequest.getPrice());
+        map.put("stock",productRequest.getStock());
+        map.put("description",productRequest.getDescription());
+
+
+        map.put("lastModifiedDate",new Date());
+
+
+
+
+        // 到資料庫 執行sql
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
 
 
 }
