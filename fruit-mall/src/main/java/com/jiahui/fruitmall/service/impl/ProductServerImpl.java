@@ -30,5 +30,10 @@ public class ProductServerImpl implements ProductServer {
         productDao.updateProduct(productId,productRequest);
     }
 
+    @Override
+    public void deleteProductById(Integer productId) {
+        productDao.deleteProductById(productId);
+    }
+
 
 }
