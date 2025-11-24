@@ -3,7 +3,11 @@ package com.jiahui.fruitmall.service;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
 
+import java.util.List;
+
 public interface ProductServer {
+
+    List<Product> getProducts();
 
     Product getProductById(Integer productId);
 
@@ -12,4 +16,6 @@ public interface ProductServer {
     void updateProduct(Integer productId,ProductRequest productRequest);
 
     void deleteProductById(Integer productId);
+
+
 }

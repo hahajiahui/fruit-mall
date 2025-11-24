@@ -23,6 +23,28 @@ public class ProductDaoImpl implements ProductDao {
 
 
     @Override
+    public List<Product> getProducts() {
+
+        //sql 語法 查商品 列表
+        String  sql="SELECT  product_id, product_name, category, image_url, price, stock, description, " +
+                "created_date, last_modified_date "+
+                " FROM product";
+
+
+        //map 裝前端傳來參數值
+        Map<String,Object> map =new HashMap<>();
+
+
+        //執行sql   找出一列 一列 product 就是一個 一個 product 物件
+        //用 list 裝
+        List<Product> productList= namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+
+
+
+        return productList;
+    }
+
+    @Override
     public Product getProductById(Integer productId) {
 
         String sql="SELECT product_id,product_name, category, image_url, price, stock, description," +
