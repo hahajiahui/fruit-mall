@@ -16,12 +16,17 @@ public class ProductServerImpl implements ProductServer {
     @Autowired
   private ProductDao productDao;
 
-
+    @Override
+    public Integer countProduct(ProductQueryPararm productQueryPararm) {
+        return productDao.countProduct(productQueryPararm);
+    }
 
 //    @Override
 //    public List<Product> getProducts(ProductCategory category,String search) {
 //        return productDao.getProducts(category,search);
 //    }
+
+
 
     @Override
     public List<Product> getProducts(ProductQueryPararm productQueryPararm) {

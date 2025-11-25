@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductServer {
 
+    Integer countProduct(ProductQueryPararm productQueryPararm);
+
     List<Product> getProducts(ProductQueryPararm productQueryPararm);
     //List<Product> getProducts(ProductCategory category,String search);
 

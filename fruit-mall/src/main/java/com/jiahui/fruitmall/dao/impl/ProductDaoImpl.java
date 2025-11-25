@@ -70,9 +70,41 @@ public class ProductDaoImpl implements ProductDao {
         return productList;
     }
 
+    @Override
+    //接前端 傳來 值 存在 一個類別  把類別看成一個 變數 只是這個變數 很大
+    public Integer countProduct(ProductQueryPararm productQueryPararm) {
+
+        String sql= "SELECT COUNT(*) FROM product WHERE 1=1";
 
 
-//    @Override
+        //map 裝前端傳來參數值
+        Map<String,Object> map =new HashMap<>();
+
+
+        if(productQueryPararm.getCategory()!=null) {
+
+            sql = sql + " AND category=:category";
+
+            map.put("category", productQueryPararm.getCategory().name());
+
+        }
+
+        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
+        // 先 product_name LIKE :search"  再 "%"+search+"%"
+        if(productQueryPararm.getSearch()!=null){
+            sql=sql+" AND product_name LIKE :search";
+            map.put("search","%"+productQueryPararm.getSearch()+"%");
+        }
+
+
+
+
+         Integer total =namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+
+        return total;
+    }
+
+    //    @Override
 //    public List<Product> getProducts(ProductCategory category,String search) {
 //
 //        //sql 語法 查商品 列表  WHERE 1=1
@@ -165,7 +197,7 @@ public class ProductDaoImpl implements ProductDao {
        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map),keyHolder);
 
 
-       //??
+       //回傳物件 轉為 int
        int productid =keyHolder.getKey().intValue();
 
 

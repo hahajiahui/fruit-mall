@@ -6,6 +6,7 @@ import com.jiahui.fruitmall.dto.ProductQueryPararm;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
 import com.jiahui.fruitmall.service.ProductServer;
+import com.jiahui.fruitmall.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,9 @@ public class ProductController {
    private ProductServer productServer;
 
 
-    //查詢 商品列表
-
+    //查詢全部商品
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(//查詢條件 filtering
+    public ResponseEntity<Page<Product>> getProducts(//查詢條件 filtering
                                                      @RequestParam (required = false) ProductCategory category,
                                                      @RequestParam (required=false) String search,
                                                      //排序
@@ -49,9 +49,51 @@ public class ProductController {
 
         List<Product>proudctList =productServer.getProducts(productQueryPararm);
 
-        return ResponseEntity.status(HttpStatus.OK).body(proudctList);
+       //計算查到的 有多少筆
+        Integer total =productServer.countProduct(productQueryPararm);
+
+
+
+
+        //分頁
+        Page<Product>page= new Page<Product>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(proudctList);
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
 
     }
+
+
+    //查詢 商品列表
+
+//    @GetMapping("/products")
+//    public ResponseEntity<List<Product>> getProducts(//查詢條件 filtering
+//                                                     @RequestParam (required = false) ProductCategory category,
+//                                                     @RequestParam (required=false) String search,
+//                                                     //排序
+//                                                     @RequestParam(defaultValue = "created_date") String orderBy,
+//                                                     @RequestParam (defaultValue = "desc")String sort,
+//                                                     @RequestParam (defaultValue = "5") @Max(1000) @Min(0) Integer limit,
+//                                                     @RequestParam (defaultValue = "0")@Min(0)Integer offset
+//    ){
+//
+//        ProductQueryPararm productQueryPararm = new ProductQueryPararm();
+//        productQueryPararm.setCategory(category);
+//        productQueryPararm.setSearch(search);
+//        productQueryPararm.setOrderBy(orderBy);
+//        productQueryPararm.setSort(sort);
+//        productQueryPararm.setLimit(limit);
+//        productQueryPararm.setOffset(offset);
+//
+//
+//        List<Product>proudctList =productServer.getProducts(productQueryPararm);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(proudctList);
+//
+//    }
 
     @GetMapping("/product/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable  Integer productId){
