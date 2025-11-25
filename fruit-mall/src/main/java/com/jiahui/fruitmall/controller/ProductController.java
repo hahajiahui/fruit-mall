@@ -1,6 +1,7 @@
 package com.jiahui.fruitmall.controller;
 
 
+import com.jiahui.fruitmall.constant.ProductCategory;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
 import com.jiahui.fruitmall.service.ProductServer;
@@ -22,8 +23,10 @@ public class ProductController {
     //查詢 商品列表
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product>proudctList =productServer.getProducts();
+    public ResponseEntity<List<Product>> getProducts(@RequestParam (required = false) ProductCategory category,
+                                                     @RequestParam (required=false) String search
+    ){
+        List<Product>proudctList =productServer.getProducts(category,search);
 
         return ResponseEntity.status(HttpStatus.OK).body(proudctList);
 

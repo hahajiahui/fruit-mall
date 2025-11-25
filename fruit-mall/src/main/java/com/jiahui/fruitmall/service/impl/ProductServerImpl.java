@@ -1,5 +1,6 @@
 package com.jiahui.fruitmall.service.impl;
 
+import com.jiahui.fruitmall.constant.ProductCategory;
 import com.jiahui.fruitmall.dao.ProductDao;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
@@ -14,11 +15,11 @@ public class ProductServerImpl implements ProductServer {
     @Autowired
   private ProductDao productDao;
 
+
+
     @Override
-    public List<Product> getProducts() {
-
-
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category,String search) {
+        return productDao.getProducts(category,search);
     }
 
     @Override
