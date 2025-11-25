@@ -55,6 +55,8 @@ public class ProductDaoImpl implements ProductDao {
             map.put("search","%"+productQueryPararm.getSearch()+"%");
         }
 
+        sql=sql+" ORDER BY "+ productQueryPararm.getOrderBy()+" "+productQueryPararm.getSort();
+
 
         //執行sql   找出一列 一列 product 就是一個 一個 product 物件
         //用 list 裝
