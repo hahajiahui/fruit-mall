@@ -58,6 +58,11 @@ public class ProductDaoImpl implements ProductDao {
         sql=sql+" ORDER BY "+ productQueryPararm.getOrderBy()+" "+productQueryPararm.getSort();
 
 
+        // 分頁  限制查詢筆數 offset
+        sql=sql+" LIMIT :limit OFFSET :offset";
+        map.put("limit",productQueryPararm.getLimit());
+        map.put("offset",productQueryPararm.getOffset());
+
         //執行sql   找出一列 一列 product 就是一個 一個 product 物件
         //用 list 裝
         List<Product> productList= namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
