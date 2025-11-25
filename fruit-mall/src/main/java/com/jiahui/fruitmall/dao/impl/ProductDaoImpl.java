@@ -1,7 +1,8 @@
 package com.jiahui.fruitmall.dao.impl;
 
-import com.jiahui.fruitmall.constant.ProductCategory;
+//import com.jiahui.fruitmall.constant.ProductCategory;
 import com.jiahui.fruitmall.dao.ProductDao;
+import com.jiahui.fruitmall.dto.ProductQueryPararm;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
 import com.jiahui.fruitmall.rowapper.ProductRowMapper;
@@ -23,8 +24,10 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
+
+
     @Override
-    public List<Product> getProducts(ProductCategory category,String search) {
+    public List<Product> getProducts(ProductQueryPararm productQueryPararm) {
 
         //sql 語法 查商品 列表  WHERE 1=1
         String  sql="SELECT  product_id, product_name, category, image_url, price, stock, description, " +
@@ -37,19 +40,19 @@ public class ProductDaoImpl implements ProductDao {
         Map<String,Object> map =new HashMap<>();
 
 
-        if(category!=null) {
+        if(productQueryPararm.getCategory()!=null) {
 
             sql = sql + " AND category=:category";
 
-            map.put("category", category.name());
+            map.put("category", productQueryPararm.getCategory().name());
 
         }
 
         //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
         // 先 product_name LIKE :search"  再 "%"+search+"%"
-        if(search!=null){
+        if(productQueryPararm.getSearch()!=null){
             sql=sql+" AND product_name LIKE :search";
-            map.put("search","%"+search+"%");
+            map.put("search","%"+productQueryPararm.getSearch()+"%");
         }
 
 
@@ -59,6 +62,45 @@ public class ProductDaoImpl implements ProductDao {
 
         return productList;
     }
+
+
+
+//    @Override
+//    public List<Product> getProducts(ProductCategory category,String search) {
+//
+//        //sql 語法 查商品 列表  WHERE 1=1
+//        String  sql="SELECT  product_id, product_name, category, image_url, price, stock, description, " +
+//                "created_date, last_modified_date "+
+//                " FROM product WHERE 1=1";
+//
+//
+//
+//        //map 裝前端傳來參數值
+//        Map<String,Object> map =new HashMap<>();
+//
+//
+//        if(category!=null) {
+//
+//            sql = sql + " AND category=:category";
+//
+//            map.put("category", category.name());
+//
+//        }
+//
+//        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
+//        // 先 product_name LIKE :search"  再 "%"+search+"%"
+//        if(search!=null){
+//            sql=sql+" AND product_name LIKE :search";
+//            map.put("search","%"+search+"%");
+//        }
+//
+//
+//        //執行sql   找出一列 一列 product 就是一個 一個 product 物件
+//        //用 list 裝
+//        List<Product> productList= namedParameterJdbcTemplate.query(sql,map,new ProductRowMapper());
+//
+//        return productList;
+//    }
 
 
 

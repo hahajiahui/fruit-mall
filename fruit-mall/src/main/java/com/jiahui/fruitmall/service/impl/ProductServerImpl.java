@@ -1,7 +1,8 @@
 package com.jiahui.fruitmall.service.impl;
 
-import com.jiahui.fruitmall.constant.ProductCategory;
+//import com.jiahui.fruitmall.constant.ProductCategory;
 import com.jiahui.fruitmall.dao.ProductDao;
+import com.jiahui.fruitmall.dto.ProductQueryPararm;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
 import com.jiahui.fruitmall.service.ProductServer;
@@ -17,9 +18,14 @@ public class ProductServerImpl implements ProductServer {
 
 
 
+//    @Override
+//    public List<Product> getProducts(ProductCategory category,String search) {
+//        return productDao.getProducts(category,search);
+//    }
+
     @Override
-    public List<Product> getProducts(ProductCategory category,String search) {
-        return productDao.getProducts(category,search);
+    public List<Product> getProducts(ProductQueryPararm productQueryPararm) {
+        return productDao.getProducts(productQueryPararm);
     }
 
     @Override

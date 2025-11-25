@@ -2,6 +2,7 @@ package com.jiahui.fruitmall.controller;
 
 
 import com.jiahui.fruitmall.constant.ProductCategory;
+import com.jiahui.fruitmall.dto.ProductQueryPararm;
 import com.jiahui.fruitmall.dto.ProductRequest;
 import com.jiahui.fruitmall.mode.Product;
 import com.jiahui.fruitmall.service.ProductServer;
@@ -26,7 +27,13 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(@RequestParam (required = false) ProductCategory category,
                                                      @RequestParam (required=false) String search
     ){
-        List<Product>proudctList =productServer.getProducts(category,search);
+
+        ProductQueryPararm productQueryPararm = new ProductQueryPararm();
+        productQueryPararm.setCategory(category);
+        productQueryPararm.setSearch(search);
+
+
+        List<Product>proudctList =productServer.getProducts(productQueryPararm);
 
         return ResponseEntity.status(HttpStatus.OK).body(proudctList);
 
