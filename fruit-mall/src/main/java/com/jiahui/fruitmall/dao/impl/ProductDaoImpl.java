@@ -40,20 +40,24 @@ public class ProductDaoImpl implements ProductDao {
         Map<String,Object> map =new HashMap<>();
 
 
-        if(productQueryPararm.getCategory()!=null) {
+//        if(productQueryPararm.getCategory()!=null) {
+//
+//            sql = sql + " AND category=:category";
+//
+//            map.put("category", productQueryPararm.getCategory().name());
+//
+//        }
+//
+//        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
+//        // 先 product_name LIKE :search"  再 "%"+search+"%"
+//        if(productQueryPararm.getSearch()!=null){
+//            sql=sql+" AND product_name LIKE :search";
+//            map.put("search","%"+productQueryPararm.getSearch()+"%");
+//        }
 
-            sql = sql + " AND category=:category";
 
-            map.put("category", productQueryPararm.getCategory().name());
-
-        }
-
-        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
-        // 先 product_name LIKE :search"  再 "%"+search+"%"
-        if(productQueryPararm.getSearch()!=null){
-            sql=sql+" AND product_name LIKE :search";
-            map.put("search","%"+productQueryPararm.getSearch()+"%");
-        }
+        //查詢 條件
+        sql=addFilteringsql(sql,map,productQueryPararm);
 
         sql=sql+" ORDER BY "+ productQueryPararm.getOrderBy()+" "+productQueryPararm.getSort();
 
@@ -81,22 +85,26 @@ public class ProductDaoImpl implements ProductDao {
         Map<String,Object> map =new HashMap<>();
 
 
-        if(productQueryPararm.getCategory()!=null) {
 
-            sql = sql + " AND category=:category";
+//        if(productQueryPararm.getCategory()!=null) {
+//
+//            sql = sql + " AND category=:category";
+//
+//            map.put("category", productQueryPararm.getCategory().name());
+//
+//        }
+//
+//        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
+//        // 先 product_name LIKE :search"  再 "%"+search+"%"
+//        if(productQueryPararm.getSearch()!=null){
+//            sql=sql+" AND product_name LIKE :search";
+//            map.put("search","%"+productQueryPararm.getSearch()+"%");
+//        }
 
-            map.put("category", productQueryPararm.getCategory().name());
-
-        }
-
-        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
-        // 先 product_name LIKE :search"  再 "%"+search+"%"
-        if(productQueryPararm.getSearch()!=null){
-            sql=sql+" AND product_name LIKE :search";
-            map.put("search","%"+productQueryPararm.getSearch()+"%");
-        }
 
 
+        //查詢 條件
+        sql=addFilteringsql(sql,map,productQueryPararm);
 
 
          Integer total =namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
@@ -244,6 +252,31 @@ public class ProductDaoImpl implements ProductDao {
 
         namedParameterJdbcTemplate.update(sql,map);
 
+    }
+
+
+    //重覆程式碼 整理在一起
+    //查詢 條件
+
+    private String addFilteringsql(String sql,Map<String,Object>map,ProductQueryPararm productQueryPararm){
+
+
+        if(productQueryPararm.getCategory()!=null) {
+
+            sql = sql + " AND category=:category";
+
+            map.put("category", productQueryPararm.getCategory().name());
+
+        }
+
+        //注意 模糊查詢 srping boot不是直覺寫 sql 要拆開
+        // 先 product_name LIKE :search"  再 "%"+search+"%"
+        if(productQueryPararm.getSearch()!=null){
+            sql=sql+" AND product_name LIKE :search";
+            map.put("search","%"+productQueryPararm.getSearch()+"%");
+        }
+
+         return sql;
     }
 
 
