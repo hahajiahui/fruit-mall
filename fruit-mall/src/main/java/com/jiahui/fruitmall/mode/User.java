@@ -1,5 +1,8 @@
 package com.jiahui.fruitmall.mode;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import javax.xml.crypto.Data;
 import java.util.Date;
@@ -8,8 +11,10 @@ public class User {
     @NotNull
   private Integer  userId;
     @NotNull
+    @JsonProperty("e_mail")
   private String email;
     @NotNull
+    @JsonIgnore
   private String password;
     @NotNull
   private Date createdDate;
