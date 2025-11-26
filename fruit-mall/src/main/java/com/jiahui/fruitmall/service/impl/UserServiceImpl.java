@@ -1,6 +1,7 @@
 package com.jiahui.fruitmall.service.impl;
 
 import com.jiahui.fruitmall.dao.UserDao;
+import com.jiahui.fruitmall.dto.UserLoginRequest;
 import com.jiahui.fruitmall.dto.UserRegisterRequest;
 import com.jiahui.fruitmall.mode.User;
 import com.jiahui.fruitmall.service.UserService;
@@ -49,5 +50,31 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+
+    //檢查 前端傳來 e_mail 是否有註冊過
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+
+        User user =userDao.getUserByEmail(userLoginRequest.getEmail());
+
+        if(user==null){
+
+            log.warn("這e_mail{}未註冊過",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if(user.getPassword().equals(userLoginRequest.getPassword())){
+            return user;
+        }else{
+
+            log.warn("e_mail{}密碼不正確",userLoginRequest.getEmail());
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+
+        }
+
+
     }
 }

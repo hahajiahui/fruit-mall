@@ -1,6 +1,7 @@
 package com.jiahui.fruitmall.controller;
 
 
+import com.jiahui.fruitmall.dto.UserLoginRequest;
 import com.jiahui.fruitmall.dto.UserRegisterRequest;
 import com.jiahui.fruitmall.mode.User;
 import com.jiahui.fruitmall.service.UserService;
@@ -28,6 +29,17 @@ public class UserController {
        User user = userService.getUserById(userId);
 
       return ResponseEntity.status(HttpStatus.CREATED).body(user);
+
+   }
+
+   @PostMapping("/users/login")
+   private ResponseEntity<User> userLogin(@RequestBody @Valid UserLoginRequest userLoginRequest){
+
+       User user=userService.login(userLoginRequest);
+
+
+
+       return ResponseEntity.status(HttpStatus.OK).body(user);
 
    }
 
