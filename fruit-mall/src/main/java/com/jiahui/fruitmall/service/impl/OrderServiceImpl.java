@@ -4,6 +4,7 @@ import com.jiahui.fruitmall.dao.OrderDao;
 import com.jiahui.fruitmall.dao.ProductDao;
 import com.jiahui.fruitmall.dto.BuyItem;
 import com.jiahui.fruitmall.dto.CreateOrderRequest;
+import com.jiahui.fruitmall.dto.OrderQueryParams;
 import com.jiahui.fruitmall.mode.Order;
 import com.jiahui.fruitmall.mode.OrderItem;
 import com.jiahui.fruitmall.mode.Product;
@@ -34,8 +35,26 @@ public class OrderServiceImpl implements OrderService {
 
 
 
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        return orderDao.countOrder(orderQueryParams);
+    }
 
-   @Transactional
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+
+        List<Order>orderList =orderDao.getOrders(orderQueryParams);
+
+        //每 個 訂單 詳細訂單資料
+        for(Order order :orderList){
+            List<OrderItem> orderItemList=orderDao.getOrderItemsByOrderId(order.getOrderId());
+
+            order.setOrderItemList(orderItemList);
+        }
+        return orderList;
+    }
+
+    @Transactional
     @Override
     public Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest) {
 
@@ -128,4 +147,7 @@ public class OrderServiceImpl implements OrderService {
 
         return order;
     }
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.jiahui.fruitmall.dao;
 
+import com.jiahui.fruitmall.dto.OrderQueryParams;
 import com.jiahui.fruitmall.mode.Order;
 import com.jiahui.fruitmall.mode.OrderItem;
 
@@ -17,6 +18,8 @@ public interface OrderDao {
   List<OrderItem>  getOrderItemsByOrderId(Integer orderId);
 
 
+    Integer countOrder(OrderQueryParams orderQueryParams);
 
+    List<Order> getOrders(OrderQueryParams orderQueryParams);
 
 }
