@@ -24,8 +24,6 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 
-
-
     @Override
     public List<Product> getProducts(ProductQueryPararm productQueryPararm) {
 
@@ -240,6 +238,20 @@ public class ProductDaoImpl implements ProductDao {
         // 到資料庫 執行sql
         namedParameterJdbcTemplate.update(sql,map);
 
+    }
+
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+
+        String sql="UPDATE product SET stock=:stock,last_modified_date=:lastModifiedDate"+
+                " WHERE product_id=:productId";
+
+        Map<String,Object>map=new HashMap<>();
+        map.put("productId",productId);
+        map.put("stock",stock);
+        map.put("lastModifiedDate",new Date());
+
+        namedParameterJdbcTemplate.update(sql,map);
     }
 
     @Override
